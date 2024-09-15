@@ -1,0 +1,29 @@
+body {
+	background-color: #222;
+	color: #eee;
+	font: 14px/1.5 system-ui, sans-serif;
+	min-width: 300px;
+}
+h1, h2, h3, h4, h5, h6 { 
+	font-size:1rem;
+}
+a {
+	color:inherit;
+}
+
+dl {
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.4rem;
+}
+dt {
+	margin: 0;
+	padding: 0;
+}
+dd {
+	text-align: right;
+	margin: 0;
+	padding: 0;
+}
