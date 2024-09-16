@@ -1,8 +1,12 @@
-body {
+html {
 	background-color: #222;
 	color: #eee;
 	font: 14px/1.5 system-ui, sans-serif;
-	min-width: 300px;
+	min-width: 340px;
+}
+body {
+	font: inherit;
+	padding: 0 0.5rem;
 }
 h1, h2, h3, h4, h5, h6 { 
 	font-size:1rem;
@@ -10,20 +14,44 @@ h1, h2, h3, h4, h5, h6 {
 a {
 	color:inherit;
 }
-
 dl {
+	font-size: inherit;
 	margin: 0;
 	padding: 0;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 2fr;
 	gap: 0.4rem;
 }
 dt {
 	margin: 0;
 	padding: 0;
+	font-weight: bold;
 }
 dd {
-	text-align: right;
 	margin: 0;
 	padding: 0;
+}
+
+.credits {
+	font-size: 0.9rem;
+	opacity: 0.5;
+}
+
+.stats__flags, 
+.stats__links {
+	margin: 0;
+	padding: 0.5rem 0;
+	display: block;
+}
+
+.stats__flags li,
+.stats__links li {
+	margin: 0 1rem 0 0;
+	padding: 0;
+	display: inline-block;
+}
+
+.stats__links a {
+	padding: 0.5rem;
+	margin: -0.5rem;
 }

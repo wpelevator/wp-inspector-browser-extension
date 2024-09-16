@@ -1,5 +1,4 @@
-
-function pageScript() {
+function pageReport() {
 	const { body } = document;
 
 	function getUrl( path ) {
@@ -7,24 +6,24 @@ function pageScript() {
 			window.location.protocol + '//' + window.location.host,
 		].concat( path.split( '/' ).filter( part => part.length ) ).join('/');	
 	}
-
+	
 	function getRestUrl( object_type, object_id ) {
 		return getUrl( `wp-json/wp/v2/${object_type}/${object_id}` );
 	}
-
+	
 	function getPostEditUrl( post_id ) {
 		return getUrl( `wp-admin/post.php?post=${post_id}&action=edit` );
 	}
-
+	
 	function getTermEditUrl( term_id ) {
 		return getUrl( `wp-admin/term.php?tag_ID=${term_id}` );
 	}
-
+	
 	function getUserEditUrl( user_id ) {
 		return getUrl( `wp-admin/user-edit.php?user_id=${user_id}` );
 	}
-
-	if (body) {
+	
+	if ( body ) {
 		const meta = {
 			meta_generator: document.querySelector('meta[name="generator"]')?.content,
 			url_admin: getUrl('wp-admin'),
@@ -38,7 +37,7 @@ function pageScript() {
 			is_author: body.classList.contains('author'),
 			is_logged_in: body.classList.contains('logged-in'),
 			is_multisite: body.classList.contains('multisite'),
-			'wp-admin': body.classList.contains('wp-admin'),
+			is_admin: body.classList.contains('wp-admin'),
 			is_category: body.className.includes('category-'),
 			category: body.className.match(/category-(\w+)/)?.pop(),
 			category_id: body.className.match(/category-(\d+)/)?.pop(),
@@ -52,40 +51,68 @@ function pageScript() {
 			author_id: body.className.match(/author-(\d+)/)?.pop(),
 			author: body.className.match(/author-(\w+)/)?.pop(),
 		};
-
+	
 		if ( meta.post_id ) {
 			meta.url_edit = getPostEditUrl( meta.post_id );
 			meta.url_rest_api = getRestUrl( 'posts', meta.post_id );
 		}
-
+	
 		if ( meta.category_id ) {
 			meta.url_edit = getTermEditUrl( meta.category_id );
 			meta.url_rest_api = getRestUrl( 'categories', meta.category_id );
 		}
-
+	
 		return meta;
 	}
-
-	return {};
+	
+	return {
+		notice: 'No body element found for the page!'
+	};
 }
 
 function setAttributes(attributes) {
-	const stats = document.getElementById('stats');
+	const content = [];
 	
-	stats.innerHTML = Object.entries(attributes).map(([key, value]) => {
-		if (key.indexOf('url') === 0) {
-			value = `<a href="${value}" target="_blank">${key}</a>`;
+	const flags = Object.entries(attributes).map(([key, value]) => {
+		if (key.indexOf('is_') === 0 && value) {
+			return `<li>✅ ${key}</li>`;
 		}
-		return value ? `<dt>${key}</dt><dd>${value}</dd>` : null;
-	}).join('');
+		
+		return null;
+	});
+
+	content.push( `<ul class="stats__flags">${flags.join('')}</ul>` );
+
+	const links = Object.entries(attributes).map(([key, value]) => {
+		if (key.indexOf('url_') === 0) {
+			return `<li><a href="${value}" target="_blank">🔗 ${key.replace('url_', '')}</a></li>`;
+		}
+		
+		return null;
+	});
+
+	content.push( `<ul class="stats__links">${links.join('')}</ul>` );
+
+	const props = Object.entries(attributes).map(([key, value]) => {
+		if ( 'string' === typeof value && key.indexOf('url_') !== 0 ) {
+			return `<dt>${key}</dt><dd>${value}</dd>`;
+		}
+		
+		return null;
+	});
+
+	content.push( `<dl class="stats__props">${props.join('')}</dl>` );
+
+	document.getElementById('stats').innerHTML = content.join('');
 }
 
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    chrome.scripting.executeScript({
+	chrome.scripting.executeScript({
 		target: { tabId: tabs[0].id },
-		func: pageScript
-	}).then((result) => {
-		setAttributes(result.pop().result);
+		func: pageReport
+	}).then(response => {
+		const { result } = response.pop();
+		setAttributes( result );
 	});
 });
 
