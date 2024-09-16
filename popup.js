@@ -43,7 +43,7 @@ function pageReport() {
 			category_id: body.className.match(/category-(\d+)/)?.pop(),
 			tag: body.className.match(/tag-(\w+)/)?.pop(),
 			is_page: body.className.includes('page-id-'),
-			is_single: body.className.includes('post-id-'),
+			is_single: body.classList.contains('single'),
 			post_id: body.className.match(/(page-id|postid)-(\d+)/)?.pop(),
 			page_template: body.className.match(/page-template-(\w+)/)?.pop(),
 			post_format: body.className.match(/single-format-(\w+)/)?.pop(),
