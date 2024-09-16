@@ -3,7 +3,6 @@
 	"name": "WP Inspector",
 	"description": "Quick access to WordPress site information and links to edit content, access admin and relevant REST API endpoints.",
 	"version": "0.0.1",
-	"homepage_url": "https://github.com/wpelevator/wp-inspector-browser-extension",
 	"icons": {
 		"48": "icon48.png",
 		"128": "icon128.png"
