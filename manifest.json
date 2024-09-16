@@ -1,11 +1,12 @@
 {
 	"manifest_version": 3,
 	"name": "WP Inspector",
-	"description": "Explore WordPress sites",
-	"version": "1.0",
-	"action": {
-		"default_popup": "popup.html",
-		"default_icon": "icon.png"
+	"description": "Quick access to WordPress site information and links to edit content, access admin and relevant REST API endpoints.",
+	"version": "0.0.1",
+	"homepage_url": "https://github.com/wpelevator/wp-inspector-browser-extension",
+	"icons": {
+		"48": "icon48.png",
+		"128": "icon128.png"
 	},
 	"permissions": [
 		"activeTab",
